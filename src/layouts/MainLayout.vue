@@ -2,9 +2,11 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <img src="../../public/CKHS-LOGO.ico" style="max-width: 5%; max-height: 5%" fit="contain" />
-        <q-toolbar-title> 建中社團管理平台 </q-toolbar-title>
+        <q-btn flat dense round icon="menu" @click="toggleLeftDrawer" aria-label="Menu" />
+        <q-avatar>
+          <img src="/icons/CKHS-LOGO.png" style="width: 40px; height: 40px" />
+        </q-avatar>
+        <q-toolbar-title>建中社團管理平台</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -24,63 +26,25 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import { useQuasar } from 'quasar'
 
-const linksList = [
-  {
-    title: '首頁',
-    icon: 'home',
-    link: '/',
-  },
-  {
-    title: '活動申請',
-    icon: 'article',
-    link: '/application',
-  },
-  {
-    title: '公告',
-    icon: 'campaign',
-    link: '/announcement',
-  },
-  {
-    title: '教師資料上傳',
-    icon: 'cloud',
-    link: '/upload',
-  },
-  {
-    title: '公假登錄',
-    icon: 'event',
-    link: '/official-leave',
-  },
-  {
-    title: '社團銷曠',
-    icon: 'edit',
-    link: '/skip',
-  },
-  {
-    title: '違規通知',
-    icon: 'warning',
-    link: '/notice',
-  },
-  {
-    title: '社團評鑑',
-    icon: 'star',
-    link: '/evaluation',
-  },
-  {
-    title: '社課重補修',
-    icon: 'school',
-    link: '/retakecourses',
-  },
-  {
-    title: '關於',
-    icon: 'info',
-    link: '/about',
-  },
-]
-
-const leftDrawerOpen = ref(false)
+const $q = useQuasar()
+const leftDrawerOpen = ref($q.screen.gt.sm)
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+const linksList = [
+  { title: '首頁', icon: 'home', link: '/' },
+  { title: '活動申請', icon: 'article', link: '/application' },
+  { title: '公告', icon: 'campaign', link: '/announcement' },
+  { title: '教師資料上傳', icon: 'cloud', link: '/upload' },
+  { title: '公假登錄', icon: 'event', link: '/official-leave' },
+  { title: '社團銷曠', icon: 'edit', link: '/skip' },
+  { title: '違規通知', icon: 'warning', link: '/notice' },
+  { title: '社團評鑑', icon: 'star', link: '/evaluation' },
+  { title: '社課重補修', icon: 'school', link: '/retakecourses' },
+  { title: '關於', icon: 'info', link: '/about' },
+]
 </script>

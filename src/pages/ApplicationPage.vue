@@ -2,14 +2,12 @@
   <img
     src="../../public/icons/application.png"
     alt="step"
-    style="max-width: 100%; max-height: 100%"
-    fit="contain"
+    style="width: 100%; height: auto; display: block; object-fit: contain"
   />
   <img
     src="../../public/icons/bar.png"
     alt="list"
-    style="max-width: 100%; max-height: 100%"
-    fit="contain"
+    style="width: 100%; height: auto; display: block; object-fit: contain"
   />
   <div class="q-pa-md" fit="contain">
     <q-list bordered class="rounded-borders">
