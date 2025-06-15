@@ -2,40 +2,16 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <img src="../../public/CKHS-LOGO.ico" style="max-width: 5%; max-height: 5%" fit="contain" />
+        <q-toolbar-title> 建中社團管理平台 </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item-label header>工具列</q-item-label>
+        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
@@ -51,52 +27,60 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: '首頁',
+    icon: 'home',
+    link: '/',
+  },
+  {
+    title: '活動申請',
+    icon: 'article',
+    link: '/application',
+  },
+  {
+    title: '公告',
+    icon: 'campaign',
+    link: '/announcement',
+  },
+  {
+    title: '教師資料上傳',
+    icon: 'cloud',
+    link: '/upload',
+  },
+  {
+    title: '公假登錄',
+    icon: 'event',
+    link: '/official-leave',
+  },
+  {
+    title: '社團銷曠',
+    icon: 'edit',
+    link: '/skip',
+  },
+  {
+    title: '違規通知',
+    icon: 'warning',
+    link: '/notice',
+  },
+  {
+    title: '社團評鑑',
+    icon: 'star',
+    link: '/evaluation',
+  },
+  {
+    title: '社課重補修',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/retakecourses',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: '關於',
+    icon: 'info',
+    link: '/about',
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ]
 
 const leftDrawerOpen = ref(false)
 
-function toggleLeftDrawer () {
+function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 </script>
