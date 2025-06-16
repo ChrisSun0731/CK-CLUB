@@ -14,6 +14,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '/application', component: () => import('pages/ApplicationPage.vue') }],
   },
+  {
+    path: '/upload',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/upload', component: () => import('pages/UploadPage.vue') }],
+  },
 
   {
     path: '/:catchAll(.*)*',
