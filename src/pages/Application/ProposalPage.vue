@@ -28,6 +28,8 @@
           >
             企劃書必備項目
           </q-btn>
+          <br />
+          <br />
           <q-btn
             href="https://docs.google.com/document/d/1psNb3pbU1nL6WEZW0y-wn4b8il-YTimrVlw8vhv0uSU/edit?tab=t.0"
             style="color: white; background-color: #1c2087"

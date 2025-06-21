@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="bg-primary text-white no-print" elevated height-hint="98">
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="toggleLeftDrawer" aria-label="Menu" />
         <q-avatar>
@@ -10,8 +10,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
+    <q-drawer v-model="leftDrawerOpen" bordered show-if-above side="left" style="overflow: hidden">
+      <q-list class="menu-list fit column">
         <q-item-label header>工具列</q-item-label>
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>

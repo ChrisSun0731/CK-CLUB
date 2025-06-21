@@ -10,6 +10,15 @@
         />
         <br />
         <h4 class="text-center"><strong>建中社團管理平台</strong></h4>
+        <br />
+        <q-btn
+          class="text-center"
+          href="https://sites.google.com/gl.ck.tp.edu.tw/ckclub/%E6%B4%BB%E5%8B%95%E7%94%B3%E8%AB%8B%E6%B5%81%E7%A8%8B?authuser=0"
+          style="color: white; background-color: #1c2087"
+          target="_blank"
+        >
+          本平台仍在開發中，點選前往原平台
+        </q-btn>
       </q-card-section>
 
       <q-separator spaced />

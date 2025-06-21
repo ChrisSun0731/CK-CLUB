@@ -58,7 +58,7 @@ const forms = [
     url: 'https://drive.google.com/file/d/1k5641_XpStKR5igG4VPGnAOhfJFPsLMU/view',
   },
   {
-    label: '成果報告上船表單',
+    label: '成果報告上傳表單',
     url: 'https://docs.google.com/forms/d/e/1FAIpQLSdtR-bc9idw6JXl86-4Jr_b1M9yZPsO9ZobRXQ4hT19gGvgFQ/viewform',
   },
 ]
