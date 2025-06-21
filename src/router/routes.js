@@ -34,6 +34,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '/evaluation', component: () => import('pages/EvaluationPage.vue') }],
   },
+  {
+    path: '/official-leave',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/official-leave', component: () => import('pages/OfficialLeavePage.vue') }],
+  },
 
   {
     path: '/:catchAll(.*)*',
