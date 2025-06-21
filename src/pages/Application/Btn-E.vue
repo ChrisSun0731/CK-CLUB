@@ -21,17 +21,19 @@
         <q-card-section class="text-center">
           <strong>家長同意書中「必有四項備註」</strong></q-card-section
         >
-        <q-card-section class="text-center">
+        <q-card-section>
           1. 請叮嚀同學遵守相關防疫規範，若有不適情況建議於家中休息。<br />
           2. 本活動為上開社團/班級自行辦理，經學校審核通過後始得進行。<br />
           3. 學務處將抽樣聯繫家長確認此活動同意書，敬請配合，謝謝。<br />
           4. 若活動期間該生有進行危險行為或有損校譽之情事，同意學生按建中校規處理。<br /><br />
-          <strong>*未列出上述四項備註則須重新製作繳交*</strong>
+          <div class="text-center">
+            <strong>*未列出上述四項備註則須重新製作繳交*</strong>
+          </div>
         </q-card-section>
         <div><br /></div>
       </q-expansion-item>
       <q-expansion-item expand-separator icon="report" label="家長同意書特別注意事項" default>
-        <q-card-section class="text-center">
+        <q-card-section>
           1. 家長同意書<strong>限一張單面，請勿跨頁</strong>導致難以蒐集或掃描。<br />
           2.
           社活組會隨機抽查家長同意書，致電家長確認對方是否同意，<strong>請務必確實填寫家長手機與家中電話</strong>。<br />

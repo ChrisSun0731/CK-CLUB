@@ -29,7 +29,7 @@
       </q-expansion-item>
 
       <q-expansion-item expand-separator icon="description" label="申請表" default>
-        <q-card-section class="text-center">點選按鈕下載申請表</q-card-section>
+        <q-card-section class="text-center"><strong>點選按鈕下載申請表</strong></q-card-section>
 
         <template v-for="(form, index) in forms" :key="index">
           <div class="row justify-center">

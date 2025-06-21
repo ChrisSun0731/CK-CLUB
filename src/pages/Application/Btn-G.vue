@@ -7,8 +7,8 @@
     default
   >
     <q-card>
-      <q-card-section class="text-center"
-        ><strong>住宿相關表件特別注意事項</strong><br /><br />
+      <q-card-section>
+        <div class="text-center"><strong>住宿相關表件特別注意事項</strong><br /><br /></div>
         1.
         <strong
           >確定住宿地點前，須確認該旅宿地點有「民宿登記證」，並提供電子檔或紙本影本。（可上旅宿網查詢）</strong

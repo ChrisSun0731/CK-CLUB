@@ -3,13 +3,15 @@
     <q-card flat bordered class="q-pa-lg q-mx-auto" style="max-width: 600px; width: 100%">
       <q-card-section class="flex flex-center">
         <br />
-        <h3 class="text-center"><strong>社團教師資料上傳</strong></h3>
         <q-img
           src="../../public/icons/CKHS-LOGO.png"
           alt="cklogo"
           style="max-width: 50%; max-height: 50%"
           fit="contain"
         />
+      </q-card-section>
+      <q-card-section class="flex flex-center">
+        <h4 class="text-center"><strong>社團教師資料上傳</strong></h4>
       </q-card-section>
 
       <q-separator spaced />

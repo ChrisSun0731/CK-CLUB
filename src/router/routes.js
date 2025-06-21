@@ -19,6 +19,21 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '/upload', component: () => import('pages/UploadPage.vue') }],
   },
+  {
+    path: '/retakecourses',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/retakecourses', component: () => import('pages/RetakeCoursesPage.vue') }],
+  },
+  {
+    path: '/notice',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/notice', component: () => import('pages/NoticePage.vue') }],
+  },
+  {
+    path: '/evaluation',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/evaluation', component: () => import('pages/EvaluationPage.vue') }],
+  },
 
   {
     path: '/:catchAll(.*)*',

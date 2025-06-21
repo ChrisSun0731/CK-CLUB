@@ -42,7 +42,7 @@ const linksList = [
   { title: '教師資料上傳', icon: 'cloud', link: '/upload' },
   { title: '公假登錄', icon: 'event', link: '/official-leave' },
   { title: '社團銷曠', icon: 'edit', link: '/skip' },
-  { title: '違規通知', icon: 'warning', link: '/notice' },
+  { title: '違規紀錄', icon: 'warning', link: '/notice' },
   { title: '社團評鑑', icon: 'star', link: '/evaluation' },
   { title: '社課重補修', icon: 'school', link: '/retakecourses' },
   { title: '關於', icon: 'info', link: '/about' },

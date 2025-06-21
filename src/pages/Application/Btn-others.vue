@@ -1,6 +1,6 @@
 <template>
   <q-expansion-item expand-separator icon="list" label="其他相關表件、網址" default>
-    <q-card-section class="text-center">點選按鈕前往連結</q-card-section>
+    <q-card-section class="text-center"><strong>點選按鈕前往連結</strong></q-card-section>
 
     <template v-for="(form, index) in forms" :key="index">
       <div class="row justify-center">
