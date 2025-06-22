@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md flex column items-center">
     <q-card flat bordered class="q-pa-lg q-mx-auto" style="max-width: 600px; width: 100%">
-      <q-card-section class="flex flex-center">
+      <q-card-section class="column items-center">
         <q-img
           src="../../public/icons/CKHS-LOGO.png"
           alt="cklogo"
@@ -17,7 +17,7 @@
           style="color: white; background-color: #1c2087"
           target="_blank"
         >
-          本平台仍在開發中，點選前往原平台
+          點選可前往原平台
         </q-btn>
       </q-card-section>
 
