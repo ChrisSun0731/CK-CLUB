@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md flex flex-center">
+  <q-page class="q-pa-md column items-center">
     <q-card flat bordered class="q-pa-lg q-mx-auto" style="max-width: 600px; width: 100%">
       <q-card-section class="flex flex-center">
         <br />

@@ -39,6 +39,16 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '/official-leave', component: () => import('pages/OfficialLeavePage.vue') }],
   },
+  {
+    path: '/skip',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/skip', component: () => import('pages/SkipPage.vue') }],
+  },
+  {
+    path: '/announcement',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '/announcement', component: () => import('pages/AnnouncementPage.vue') }],
+  },
 
   {
     path: '/:catchAll(.*)*',
