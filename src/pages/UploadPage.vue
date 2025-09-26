@@ -1,8 +1,8 @@
 <template>
-  <q-page class="q-pa-md full-height">
-    <div class="full-height column">
+  <q-page class="q-pa-md">
+    <div class="column">
       <!-- 上三分之一：A、B 卡片區域 -->
-      <div class="row q-col-gutter-md" style="height: 33.33vh; min-height: 250px">
+      <div class="row q-col-gutter-md" style="height: 200px">
         <!-- A. 校內指導老師 -->
         <div class="col-6">
           <q-card flat bordered class="full-height q-pa-md">
@@ -24,7 +24,7 @@
       </div>
 
       <!-- 下三分之二：按鈕 + iframe 區域 -->
-      <div class="row q-col-gutter-md q-mt-md" style="height: 66.67vh; min-height: 500px">
+      <div class="row q-col-gutter-md q-mt-md" style="height: 66.67vh; min-height: 800px">
         <!-- 左側三分之一：按鈕區域 -->
         <div class="col-4">
           <div class="column q-gutter-md full-height">
