@@ -31,3 +31,11 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+
+# Firebase service account credentials
+serviceAccount.json
+backend/serviceAccount.json
+
+# Internal documentation (not for version control)
+docs-internal/
+
