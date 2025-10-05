@@ -6,7 +6,7 @@ import { dirname, join } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-let db, storage, auth
+let db, auth
 
 export function initializeFirebase() {
   try {
@@ -16,11 +16,9 @@ export function initializeFirebase() {
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     })
 
     db = admin.firestore()
-    storage = admin.storage().bucket()
     auth = admin.auth()
 
     console.log('✅ Firebase Admin initialized successfully')
@@ -32,10 +30,6 @@ export function initializeFirebase() {
 
 export function getFirestore() {
   return db
-}
-
-export function getStorage() {
-  return storage
 }
 
 export function getAuth() {

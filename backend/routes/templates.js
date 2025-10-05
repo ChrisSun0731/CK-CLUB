@@ -1,4 +1,12 @@
-import { getStorage } from '../config/firebase.js'
+import { promises as fs } from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// 模板目錄路徑
+const TEMPLATES_DIR = path.join(__dirname, '..', 'templates')
 
 export default async function templateRoutes(fastify, opts) {
   /**
@@ -45,43 +53,39 @@ export default async function templateRoutes(fastify, opts) {
   fastify.get('/download/:id', async (request, reply) => {
     try {
       const { id } = request.params
-      const storage = getStorage()
 
-      // 根據 ID 對應檔案路徑
+      // 根據 ID 對應檔案名稱
       const templateFiles = {
-        'template-1': 'templates/會辦單_契約書.pdf',
-        'template-2': 'templates/資料卡.pdf',
+        'template-1': '會辦單_契約書.pdf',
+        'template-2': '資料卡.pdf',
       }
 
-      const filePath = templateFiles[id]
+      const filename = templateFiles[id]
 
-      if (!filePath) {
+      if (!filename) {
         return reply.status(404).send({
           error: 'Not Found',
           message: '找不到該範本',
         })
       }
 
-      const file = storage.file(filePath)
-      const [exists] = await file.exists()
+      const filepath = path.join(TEMPLATES_DIR, filename)
 
-      if (!exists) {
+      // 檢查檔案是否存在
+      try {
+        await fs.access(filepath)
+      } catch {
         return reply.status(404).send({
           error: 'Not Found',
           message: '範本檔案不存在',
         })
       }
 
-      // 生成帶有過期時間的下載 URL (24小時有效)
-      const [url] = await file.getSignedUrl({
-        action: 'read',
-        expires: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
-      })
-
-      return reply.send({
-        success: true,
-        downloadUrl: url,
-      })
+      // 發送檔案
+      return reply
+        .type('application/pdf')
+        .header('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`)
+        .send(await fs.readFile(filepath))
     } catch (error) {
       fastify.log.error(error)
       return reply.status(500).send({

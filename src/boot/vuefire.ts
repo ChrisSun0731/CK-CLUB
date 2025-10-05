@@ -2,7 +2,6 @@ import { boot } from 'quasar/wrappers'
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
-import { getStorage } from 'firebase/storage'
 import { useFirebaseApp, VueFire } from 'vuefire'
 import { createGtag } from 'vue-gtag'
 import type { HttpsCallable } from '@firebase/functions'
@@ -13,7 +12,6 @@ export const firebaseApp = initializeApp({
   apiKey: 'AIzaSyAmbyVzqkR_hyDS05oaWsdLX10LESyYkZU',
   authDomain: 'ck-cl-24edb.firebaseapp.com',
   projectId: 'ck-cl-24edb',
-  storageBucket: 'ck-cl-24edb.firebasestorage.app',
   messagingSenderId: '431687323765',
   appId: '1:431687323765:web:ae4c730ab1d7236e8ca83c',
   measurementId: 'G-YJN8BVWQV3',
@@ -40,7 +38,6 @@ export function useFunction(name: string): HttpsCallable {
 // Firebase 服務實例
 export const auth = getAuth(firebaseApp)
 export const db = getFirestore(firebaseApp)
-export const storage = getStorage(firebaseApp)
 export const googleProvider = new GoogleAuthProvider()
 
 // 便捷函數
@@ -50,8 +47,4 @@ export function useAuth() {
 
 export function useFirestore() {
   return db
-}
-
-export function useStorage() {
-  return storage
 }

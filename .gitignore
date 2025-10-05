@@ -41,3 +41,9 @@ backend/serviceAccount.json
 # Internal documentation (not for version control)
 docs-internal/
 
+# Uploaded files (user data, should not be in version control)
+backend/uploads/*
+!backend/uploads/README.md
+
+# Keep templates folder but allow README
+backend/templates/*.pdf
