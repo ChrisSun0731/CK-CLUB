@@ -100,15 +100,88 @@ export async function getTemplates() {
 }
 
 /**
- * 獲取範本下載連結
+ * 下載範本檔案
  * @param {string} id - 範本 ID
  */
-export async function getTemplateDownloadUrl(id) {
-  const response = await api.get(`/templates/download/${id}`)
-  return response.data
+export async function downloadTemplate(id) {
+  console.log('[downloadTemplate] Starting download for:', id)
+
+  const response = await api.get(`/templates/download/${id}`, {
+    responseType: 'blob',
+  })
+
+  console.log('[downloadTemplate] Response received:', {
+    status: response.status,
+    contentType: response.headers['content-type'],
+    contentDisposition: response.headers['content-disposition'],
+    dataSize: response.data.size,
+  })
+
+  // 從 Content-Disposition header 獲取檔名
+  const contentDisposition = response.headers['content-disposition']
+  let filename = `template-${id}.pdf`
+
+  if (contentDisposition) {
+    const match = contentDisposition.match(/filename="(.+)"/)
+    if (match) {
+      filename = match[1]
+    }
+  }
+
+  console.log('[downloadTemplate] Parsed filename:', filename)
+
+  // 獲取正確的 MIME type
+  const mimeType = response.headers['content-type'] || 'application/octet-stream'
+
+  // 創建 blob URL 並觸發下載
+  const blob = new Blob([response.data], { type: mimeType })
+  console.log('[downloadTemplate] Blob created:', {
+    size: blob.size,
+    type: blob.type,
+  })
+
+  const url = window.URL.createObjectURL(blob)
+  console.log('[downloadTemplate] Blob URL created:', url)
+
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.style.display = 'none'
+
+  console.log('[downloadTemplate] Link element created:', {
+    href: link.href,
+    download: link.download,
+  })
+
+  document.body.appendChild(link)
+  console.log('[downloadTemplate] Link appended to body')
+
+  // 使用 setTimeout 確保 DOM 更新完成
+  setTimeout(() => {
+    console.log('[downloadTemplate] Triggering click...')
+    link.click()
+    console.log('[downloadTemplate] Click triggered')
+
+    // 短暫延遲後清理
+    setTimeout(() => {
+      console.log('[downloadTemplate] Cleaning up...')
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      console.log('[downloadTemplate] Cleanup completed')
+    }, 100)
+  }, 0)
+
+  return { success: true, filename }
 }
 
-// ==================== 用戶 API ====================
+/**
+ * 獲取範本下載連結（已廢棄，使用 downloadTemplate 代替）
+ * @param {string} id - 範本 ID
+ * @deprecated
+ */
+export async function getTemplateDownloadUrl(id) {
+  return downloadTemplate(id)
+} // ==================== 用戶 API ====================
 
 /**
  * 獲取當前用戶資訊

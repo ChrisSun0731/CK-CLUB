@@ -32,7 +32,16 @@ export default [
    * pluginVue.configs["flat/recommended"]
    *   -> Above, plus rules to enforce subjective community defaults to ensure consistency.
    */
-  ...pluginVue.configs[ 'flat/essential' ],
+  ...pluginVue.configs['flat/essential'],
+
+  {
+    files: ['**/*.vue'],
+    rules: {
+      // Disable no-unused-vars for Vue SFC script setup
+      // Functions defined in <script setup> are automatically exposed to template
+      'no-unused-vars': 'off',
+    },
+  },
 
   {
     languageOptions: {
@@ -47,8 +56,8 @@ export default [
         cordova: 'readonly',
         Capacitor: 'readonly',
         chrome: 'readonly', // BEX related
-        browser: 'readonly' // BEX related
-      }
+        browser: 'readonly', // BEX related
+      },
     },
 
     // add your custom rules here
@@ -56,18 +65,27 @@ export default [
       'prefer-promise-reject-errors': 'off',
 
       // allow debugger during development only
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-    }
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+      // Vue 3 script setup functions used in template should not be marked as unused
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
 
   {
-    files: [ 'src-pwa/custom-service-worker.js' ],
+    files: ['src-pwa/custom-service-worker.js'],
     languageOptions: {
       globals: {
-        ...globals.serviceworker
-      }
-    }
+        ...globals.serviceworker,
+      },
+    },
   },
 
-  prettierSkipFormatting
+  prettierSkipFormatting,
 ]

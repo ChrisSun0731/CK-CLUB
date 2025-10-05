@@ -1,5 +1,23 @@
 import { getFirestore } from '../config/firebase.js'
 import { verifyAuth, requireAdmin } from '../middleware/auth.js'
+import { promises as fs } from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// 上傳目錄路徑
+const UPLOADS_DIR = path.join(__dirname, '..', 'uploads')
+
+// 確保上傳目錄存在
+async function ensureUploadDir() {
+  try {
+    await fs.access(UPLOADS_DIR)
+  } catch {
+    await fs.mkdir(UPLOADS_DIR, { recursive: true })
+  }
+}
 
 export default async function submissionRoutes(fastify, opts) {
   /**
@@ -9,38 +27,33 @@ export default async function submissionRoutes(fastify, opts) {
   fastify.post('/', { preHandler: verifyAuth }, async (request, reply) => {
     try {
       const db = getFirestore()
-      const storage = getStorage()
+      await ensureUploadDir()
 
       // 使用 multipart 解析表單數據和檔案
-      const data = await request.file()
+      const parts = request.parts()
       const fields = {}
-
-      // 解析文字欄位
-      for (const [key, value] of Object.entries(request.body || {})) {
-        fields[key] = value
-      }
-
-      // 處理檔案上傳
       const files = {}
-      if (data) {
-        const buffer = await data.toBuffer()
-        const filename = `submissions/${Date.now()}_${data.filename}`
-        const file = storage.file(filename)
 
-        await file.save(buffer, {
-          metadata: {
-            contentType: data.mimetype,
-          },
-        })
+      for await (const part of parts) {
+        if (part.type === 'file') {
+          // 處理檔案上傳
+          const buffer = await part.toBuffer()
+          const timestamp = Date.now()
+          const filename = `${timestamp}_${part.filename}`
+          const filepath = path.join(UPLOADS_DIR, filename)
 
-        // 生成下載 URL
-        await file.makePublic()
-        const publicUrl = `https://storage.googleapis.com/${storage.name}/${filename}`
+          await fs.writeFile(filepath, buffer)
 
-        files[data.fieldname] = {
-          filename: data.filename,
-          url: publicUrl,
-          uploadedAt: new Date().toISOString(),
+          files[part.fieldname] = {
+            filename: part.filename,
+            storedFilename: filename,
+            mimetype: part.mimetype,
+            size: buffer.length,
+            uploadedAt: new Date().toISOString(),
+          }
+        } else {
+          // 處理文字欄位
+          fields[part.fieldname] = part.value
         }
       }
 
@@ -210,6 +223,24 @@ export default async function submissionRoutes(fastify, opts) {
       const db = getFirestore()
       const { id } = request.params
 
+      // 獲取提交記錄以刪除關聯的檔案
+      const doc = await db.collection('submissions').doc(id).get()
+      if (doc.exists) {
+        const data = doc.data()
+
+        // 刪除相關檔案
+        if (data.files) {
+          for (const file of Object.values(data.files)) {
+            try {
+              const filepath = path.join(UPLOADS_DIR, file.storedFilename)
+              await fs.unlink(filepath)
+            } catch (err) {
+              fastify.log.warn(`Failed to delete file: ${file.storedFilename}`)
+            }
+          }
+        }
+      }
+
       await db.collection('submissions').doc(id).delete()
 
       return reply.send({
@@ -224,5 +255,57 @@ export default async function submissionRoutes(fastify, opts) {
       })
     }
   })
-}
 
+  /**
+   * 下載提交的檔案
+   * GET /api/submissions/:id/files/:filename
+   */
+  fastify.get('/:id/files/:filename', { preHandler: verifyAuth }, async (request, reply) => {
+    try {
+      const db = getFirestore()
+      const { id, filename } = request.params
+
+      const doc = await db.collection('submissions').doc(id).get()
+
+      if (!doc.exists) {
+        return reply.status(404).send({
+          error: 'Not Found',
+          message: '找不到該提交記錄',
+        })
+      }
+
+      const data = doc.data()
+
+      // 檢查權限
+      if (data.submittedBy !== request.user.uid && request.user.role !== 'admin') {
+        return reply.status(403).send({
+          error: 'Forbidden',
+          message: '權限不足',
+        })
+      }
+
+      // 查找檔案
+      const fileInfo = Object.values(data.files || {}).find((f) => f.storedFilename === filename)
+
+      if (!fileInfo) {
+        return reply.status(404).send({
+          error: 'Not Found',
+          message: '找不到該檔案',
+        })
+      }
+
+      // 發送檔案
+      const filepath = path.join(UPLOADS_DIR, filename)
+      return reply
+        .type(fileInfo.mimetype)
+        .header('Content-Disposition', `attachment; filename="${fileInfo.filename}"`)
+        .send(await fs.readFile(filepath))
+    } catch (error) {
+      fastify.log.error(error)
+      return reply.status(500).send({
+        error: 'Internal Server Error',
+        message: error.message,
+      })
+    }
+  })
+}

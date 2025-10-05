@@ -150,7 +150,7 @@
                 v-for="template in templates"
                 :key="template.id"
                 clickable
-                @click="downloadTemplate(template.id)"
+                @click="handleDownloadTemplate(template.id)"
               >
                 <q-item-section avatar>
                   <q-icon name="picture_as_pdf" color="red" />
@@ -175,7 +175,7 @@
 import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAuth } from 'src/composables/useAuth'
-import { createSubmission, getTemplates, getTemplateDownloadUrl } from 'src/services/api'
+import { createSubmission, getTemplates, downloadTemplate } from 'src/services/api'
 
 const $q = useQuasar()
 const { isAuthenticated } = useAuth()
@@ -287,17 +287,79 @@ async function onSubmit() {
   }
 }
 
-// 下載範本
-async function downloadTemplate(templateId) {
+// 下載範本 (used in template @click)
+async function handleDownloadTemplate(templateId) {
+  console.log('[handleDownloadTemplate] Called with templateId:', templateId)
+  console.log('[handleDownloadTemplate] $q available:', !!$q)
+  console.log('[handleDownloadTemplate] $q.loading available:', !!$q?.loading)
+  console.log('[handleDownloadTemplate] $q.notify available:', !!$q?.notify)
+
+  // 使用變數標記是否顯示 loading，避免在 finally 中調用未定義的方法
+  let loadingShown = false
+
   try {
-    const response = await getTemplateDownloadUrl(templateId)
-    window.open(response.downloadUrl, '_blank')
+    // 安全地顯示 loading
+    if ($q && $q.loading && typeof $q.loading.show === 'function') {
+      $q.loading.show({
+        message: '正在下載範本...',
+      })
+      loadingShown = true
+      console.log('[handleDownloadTemplate] Loading shown')
+    } else {
+      console.warn('[handleDownloadTemplate] $q.loading.show not available')
+    }
+
+    console.log('[handleDownloadTemplate] Calling downloadTemplate API...')
+    const result = await downloadTemplate(templateId)
+    console.log('[handleDownloadTemplate] Download result:', result)
+
+    // 安全地顯示通知
+    if ($q && $q.notify && typeof $q.notify === 'function') {
+      $q.notify({
+        type: 'positive',
+        message: `範本「${result.filename}」下載成功`,
+        timeout: 2000,
+      })
+    } else {
+      console.warn('[handleDownloadTemplate] $q.notify not available')
+      alert(`範本「${result.filename}」下載成功`)
+    }
   } catch (error) {
-    console.error('下載失敗:', error)
-    $q.notify({
-      type: 'negative',
-      message: '下載失敗，請稍後再試',
+    console.error('[handleDownloadTemplate] Error occurred:', error)
+    console.error('[handleDownloadTemplate] Error details:', {
+      message: error.message,
+      response: error.response,
+      stack: error.stack,
     })
+
+    let errorMessage = '下載失敗，請稍後再試'
+
+    if (error.response?.status === 404) {
+      errorMessage = '找不到範本檔案，請聯繫管理員'
+    } else if (error.response?.status === 500) {
+      errorMessage = '伺服器錯誤，請稍後再試'
+    } else if (error.message === 'Network Error') {
+      errorMessage = '網路連線錯誤，請檢查網路連線或確認後端服務是否啟動'
+    }
+
+    // 安全地顯示錯誤通知
+    if ($q && $q.notify && typeof $q.notify === 'function') {
+      $q.notify({
+        type: 'negative',
+        message: errorMessage,
+        timeout: 3000,
+      })
+    } else {
+      console.warn('[handleDownloadTemplate] $q.notify not available for error')
+      alert(errorMessage)
+    }
+  } finally {
+    console.log('[handleDownloadTemplate] Finally block, loadingShown:', loadingShown)
+    // 只有在成功顯示 loading 時才隱藏
+    if (loadingShown && $q && $q.loading && typeof $q.loading.hide === 'function') {
+      $q.loading.hide()
+      console.log('[handleDownloadTemplate] Loading hidden')
+    }
   }
 }
 
