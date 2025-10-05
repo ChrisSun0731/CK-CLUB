@@ -1,4 +1,4 @@
-import { getFirestore, getStorage } from '../config/firebase.js'
+import { getFirestore } from '../config/firebase.js'
 import { verifyAuth, requireAdmin } from '../middleware/auth.js'
 
 export default async function submissionRoutes(fastify, opts) {
@@ -225,3 +225,4 @@ export default async function submissionRoutes(fastify, opts) {
     }
   })
 }
+

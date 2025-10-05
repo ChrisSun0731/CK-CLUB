@@ -54,38 +54,66 @@ export default async function templateRoutes(fastify, opts) {
     try {
       const { id } = request.params
 
-      // 根據 ID 對應檔案名稱
-      const templateFiles = {
-        'template-1': '會辦單_契約書.pdf',
-        'template-2': '資料卡.pdf',
+      // 根據 ID 對應檔案基礎名稱（不含副檔名）
+      const templateBaseNames = {
+        'template-1': '會辦單_契約書',
+        'template-2': '資料卡',
       }
 
-      const filename = templateFiles[id]
+      const baseName = templateBaseNames[id]
 
-      if (!filename) {
+      if (!baseName) {
         return reply.status(404).send({
           error: 'Not Found',
           message: '找不到該範本',
         })
       }
 
-      const filepath = path.join(TEMPLATES_DIR, filename)
+      // 支援的檔案格式（優先順序由高到低）
+      const supportedFormats = [
+        { ext: '.pdf', mimeType: 'application/pdf' },
+        { ext: '.doc', mimeType: 'application/msword' },
+        {
+          ext: '.docx',
+          mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        },
+      ]
 
-      // 檢查檔案是否存在
-      try {
-        await fs.access(filepath)
-      } catch {
+      // 依優先順序尋找檔案
+      let foundFile = null
+      let mimeType = null
+
+      for (const format of supportedFormats) {
+        const filepath = path.join(TEMPLATES_DIR, baseName + format.ext)
+        try {
+          await fs.access(filepath)
+          foundFile = filepath
+          mimeType = format.mimeType
+          break // 找到第一個存在的檔案就停止
+        } catch {
+          // 檔案不存在，繼續尋找下一個格式
+          continue
+        }
+      }
+
+      if (!foundFile) {
         return reply.status(404).send({
           error: 'Not Found',
-          message: '範本檔案不存在',
+          message: '範本檔案不存在（已嘗試 PDF、DOC、DOCX 格式）',
         })
       }
 
+      // 取得實際檔案名稱
+      const actualFilename = path.basename(foundFile)
+
       // 發送檔案
       return reply
-        .type('application/pdf')
-        .header('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`)
-        .send(await fs.readFile(filepath))
+        .type(mimeType)
+        .header(
+          'Content-Disposition',
+          `attachment; filename="${encodeURIComponent(actualFilename)}"`,
+        )
+        .send(await fs.readFile(foundFile))
     } catch (error) {
       fastify.log.error(error)
       return reply.status(500).send({
