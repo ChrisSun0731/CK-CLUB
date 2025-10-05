@@ -47,3 +47,5 @@ backend/uploads/*
 
 # Keep templates folder but allow README
 backend/templates/*.pdf
+backend/templates/*.doc
+backend/templates/*.docx
