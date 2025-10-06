@@ -7,47 +7,51 @@ const routes = [
   {
     path: '/about',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/about', component: () => import('pages/AboutPage.vue') }],
+    children: [{ path: '', component: () => import('pages/AboutPage.vue') }],
   },
   {
     path: '/application',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/application', component: () => import('pages/ApplicationPage.vue') }],
+    children: [{ path: '', component: () => import('pages/ApplicationPage.vue') }],
   },
   {
     path: '/upload',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/upload', component: () => import('pages/UploadPage.vue') }],
+    children: [{ path: '', component: () => import('pages/UploadPageNew.vue') }],
+  },
+  {
+    path: '/uploadnew',
+    redirect: '/upload',
   },
   {
     path: '/retakecourses',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/retakecourses', component: () => import('pages/RetakeCoursesPage.vue') }],
+    children: [{ path: '', component: () => import('pages/RetakeCoursesPage.vue') }],
   },
   {
     path: '/notice',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/notice', component: () => import('pages/NoticePage.vue') }],
+    children: [{ path: '', component: () => import('pages/NoticePage.vue') }],
   },
   {
     path: '/evaluation',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/evaluation', component: () => import('pages/EvaluationPage.vue') }],
+    children: [{ path: '', component: () => import('pages/EvaluationPage.vue') }],
   },
   {
     path: '/official-leave',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/official-leave', component: () => import('pages/OfficialLeavePage.vue') }],
+    children: [{ path: '', component: () => import('pages/OfficialLeavePage.vue') }],
   },
   {
     path: '/skip',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/skip', component: () => import('pages/SkipPage.vue') }],
+    children: [{ path: '', component: () => import('pages/SkipPage.vue') }],
   },
   {
     path: '/announcement',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/announcement', component: () => import('pages/AnnouncementPage.vue') }],
+    children: [{ path: '', component: () => import('pages/AnnouncementPage.vue') }],
   },
 
   {

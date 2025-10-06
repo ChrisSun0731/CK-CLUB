@@ -1,19 +1,20 @@
 import { boot } from 'quasar/wrappers'
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 import { useFirebaseApp, VueFire } from 'vuefire'
 import { createGtag } from 'vue-gtag'
 import type { HttpsCallable } from '@firebase/functions'
 import { getFunctions, httpsCallable } from '@firebase/functions'
 
+// 使用統一的 Firebase 配置 (CK-CLUB 專案)
 export const firebaseApp = initializeApp({
-  apiKey: 'AIzaSyAI6eGOld2TX1NkPUjvp-nqJNmzfE-Ti7U',
-  authDomain: 'cksc-legislation.firebaseapp.com',
-  projectId: 'cksc-legislation',
-  storageBucket: 'cksc-legislation.appspot.com',
-  messagingSenderId: '872443717491',
-  appId: '1:872443717491:web:7ea49ba1403de4928b0706',
-  measurementId: 'G-0ZLXJZG30T',
+  apiKey: 'AIzaSyAmbyVzqkR_hyDS05oaWsdLX10LESyYkZU',
+  authDomain: 'ck-cl-24edb.firebaseapp.com',
+  projectId: 'ck-cl-24edb',
+  messagingSenderId: '431687323765',
+  appId: '1:431687323765:web:ae4c730ab1d7236e8ca83c',
+  measurementId: 'G-YJN8BVWQV3',
 })
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
@@ -34,6 +35,16 @@ export function useFunction(name: string): HttpsCallable {
   return httpsCallable(getFunctions(useFirebaseApp(), 'asia-east1'), name)
 }
 
+// Firebase 服務實例
+export const auth = getAuth(firebaseApp)
+export const db = getFirestore(firebaseApp)
+export const googleProvider = new GoogleAuthProvider()
+
+// 便捷函數
 export function useAuth() {
-  return getAuth(firebaseApp)
+  return auth
+}
+
+export function useFirestore() {
+  return db
 }
